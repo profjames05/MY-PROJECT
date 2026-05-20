@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UENR Attendance Tracker - IT, Computer Science, Biological Science & Hospitality Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- University Header -->
+        <div class="university-header">
+            <h1 class="university-title">University of Energy and Natural Resources</h1>
+            <p class="university-subtitle">Student Attendance Tracking System</p>
+        </div>
+
+        <!-- Authentication Section -->
+        <div id="authSection" class="form-container">
+            <div class="auth-container">
+                <h1 id="authTitle">Attendance Tracker</h1>
+                
+                <!-- Role Selection -->
+                <div class="role-selector">
+                    <button type="button" class="role-btn active" id="studentRoleBtn" onclick="selectRole('student')">Student</button>
+                    <button type="button" class="role-btn" id="adminRoleBtn" onclick="selectRole('admin')">Admin</button>
+                </div>
+                
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Email:</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 12px;">Login</button>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signupForm" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="signupName">Full Name:</label>
+                        <input type="text" id="signupName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email:</label>
+                        <input type="email" id="signupEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password:</label>
+                        <input type="password" id="signupPassword" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password:</label>
+                        <input type="password" id="signupConfirmPassword" name="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 12px;">Sign Up</button>
+                </form>
+
+                <div class="toggle-text" id="toggleTextContainer">
+                    <span id="toggleText">Don't have an account? </span>
+                    <button type="button" id="toggleBtn">Sign Up</button>
+                </div>
+
+                <div class="error-message" id="authError"></div>
+            </div>
+        </div>
+
+        <!-- Attendance Section -->
+        <div id="attendanceSection" class="form-container hidden">
+            <div class="attendance-header">
+                <h1>Attendance Submission</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+            <div class="user-info">
+                Welcome, <span id="userNameDisplay"></span>
+            </div>
+
+            <form id="attendanceForm" class="attendance-form">
+                <div class="form-group">
+                    <label for="indexNumber">Index Number:</label>
+                    <input type="text" id="indexNumber" name="indexNumber" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Course Offering:</label>
+                    <select id="courseOffering" name="courseOffering" required>
+                        <option value="">-- Select Course --</option>
+                        <optgroup label="Information Technology">
+                            <option value="IT101">IT101 - Introduction to Information Technology</option>
+                            <option value="IT202">IT202 - Network Administration</option>
+                            <option value="IT303">IT303 - Database Management</option>
+                        </optgroup>
+                        <optgroup label="Computer Science">
+                            <option value="CS101">CS101 - Introduction to Computer Science</option>
+                            <option value="CS202">CS202 - Data Structures and Algorithms</option>
+                            <option value="CS303">CS303 - Software Development</option>
+                        </optgroup>
+                        <optgroup label="Biological Science">
+                            <option value="BS101">BS101 - Introduction to Biological Science</option>
+                            <option value="BS202">BS202 - Cellular Biology</option>
+                            <option value="BS303">BS303 - Genetics and Evolution</option>
+                        </optgroup>
+                        <optgroup label="Hospitality Management">
+                            <option value="HM101">HM101 - Hospitality Management Fundamentals</option>
+                            <option value="HM202">HM202 - Hotel Operations</option>
+                            <option value="HM303">HM303 - Event Management</option>
+                        </optgroup>
+                        <optgroup label="Engineering">
+                            <option value="ENG101">ENG101 - Introduction to Engineering</option>
+                            <option value="ENG202">ENG202 - Civil Engineering</option>
+                            <option value="ENG303">ENG303 - Mechanical Engineering</option>
+                            <option value="ENG404">ENG404 - Electrical Engineering</option>
+                        </optgroup>
+                        <optgroup label="Agriculture">
+                            <option value="AGR101">AGR101 - Introduction to Agriculture</option>
+                            <option value="AGR202">AGR202 - Crop Production</option>
+                            <option value="AGR303">AGR303 - Animal Husbandry</option>
+                        </optgroup>
+                        <optgroup label="Business Administration">
+                            <option value="BUS101">BUS101 - Business Fundamentals</option>
+                            <option value="BUS202">BUS202 - Accounting Principles</option>
+                            <option value="BUS303">BUS303 - Management Studies</option>
+                            <option value="BUS404">BUS404 - Finance and Banking</option>
+                        </optgroup>
+                        <optgroup label="Education">
+                            <option value="EDU101">EDU101 - Educational Psychology</option>
+                            <option value="EDU202">EDU202 - Curriculum Development</option>
+                            <option value="EDU303">EDU303 - Teaching Methods</option>
+                        </optgroup>
+                        <optgroup label="Health Sciences">
+                            <option value="HSC101">HSC101 - Introduction to Health Sciences</option>
+                            <option value="HSC202">HSC202 - Public Health</option>
+                            <option value="HSC303">HSC303 - Health Management</option>
+                        </optgroup>
+                        <optgroup label="Nursing">
+                            <option value="NUR101">NUR101 - Nursing Fundamentals</option>
+                            <option value="NUR202">NUR202 - Clinical Nursing Practice</option>
+                            <option value="NUR303">NUR303 - Community Health Nursing</option>
+                        </optgroup>
+                        <optgroup label="Pharmacy">
+                            <option value="PHM101">PHM101 - Introduction to Pharmacy</option>
+                            <option value="PHM202">PHM202 - Pharmacology</option>
+                            <option value="PHM303">PHM303 - Pharmaceutical Practice</option>
+                        </optgroup>
+                        <optgroup label="Law">
+                            <option value="LAW101">LAW101 - Introduction to Law</option>
+                            <option value="LAW202">LAW202 - Constitutional Law</option>
+                            <option value="LAW303">LAW303 - Criminal Law</option>
+                        </optgroup>
+                        <optgroup label="Fine Arts">
+                            <option value="ART101">ART101 - Introduction to Fine Arts</option>
+                            <option value="ART202">ART202 - Painting and Drawing</option>
+                            <option value="ART303">ART303 - Sculpture and Design</option>
+                        </optgroup>
+                        <optgroup label="Psychology">
+                            <option value="PSY101">PSY101 - Introduction to Psychology</option>
+                            <option value="PSY202">PSY202 - Developmental Psychology</option>
+                            <option value="PSY303">PSY303 - Clinical Psychology</option>
+                        </optgroup>
+                        <optgroup label="Social Sciences">
+                            <option value="SOC101">SOC101 - Introduction to Sociology</option>
+                            <option value="SOC202">SOC202 - Social Dynamics</option>
+                            <option value="POL101">POL101 - Political Science</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Attendance:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="present" name="attendance" value="Present">
+                            <label for="present">Present</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="absent" name="attendance" value="Absent">
+                            <label for="absent">Absent</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="excused" name="attendance" value="Excused Absence">
+                            <label for="excused">Excused Absence</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="classTime">Class Time:</label>
+                    <select id="classTime" name="classTime" required>
+                        <option value="">-- Select Class Time --</option>
+                        <option value="8:00 AM - 10:00 AM">8:00 AM - 10:00 AM</option>
+                        <option value="10:00 AM - 12:00 PM">10:00 AM - 12:00 PM</option>
+                        <option value="1:00 PM - 3:00 PM">1:00 PM - 3:00 PM</option>
+                        <option value="3:00 PM - 5:00 PM">3:00 PM - 5:00 PM</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Attendance</button>
+                <div class="success-message" id="successMessage">Attendance submitted successfully!</div>
+                <div class="error-message" id="attendanceError"></div>
+            </form>
+        </div>
+
+        <!-- Admin Dashboard Section -->
+        <div id="adminSection" class="admin-container hidden">
+            <div class="admin-header">
+                <h1>📊 Admin Dashboard</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="admin-content">
+                <!-- Navigation Tabs -->
+                <div class="admin-nav">
+                    <button class="nav-btn active" onclick="showAdminTab('overview')">Overview</button>
+                    <button class="nav-btn" onclick="showAdminTab('records')">All Records</button>
+                    <button class="nav-btn" onclick="showAdminTab('students')">Student Activities</button>
+                    <button class="nav-btn" onclick="showAdminTab('access')">Access Link</button>
+                </div>
+
+                <!-- Overview Tab -->
+                <div id="overviewTab" class="admin-tab">
+                    <h2>Dashboard Overview</h2>
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <h3>Total Students</h3>
+                            <div class="stat-value" id="totalStudents">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Records</h3>
+                            <div class="stat-value" id="totalRecords">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Present Today</h3>
+                            <div class="stat-value" id="presentToday">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Absent Today</h3>
+                            <div class="stat-value" id="absentToday">0</div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 30px;">Recent Submissions</h3>
+                    <div id="recentRecords" class="table-container"></div>
+                </div>
+
+                <!-- All Records Tab -->
+                <div id="recordsTab" class="admin-tab hidden">
+                    <h2>Attendance Records</h2>
+                    
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <label>Filter by Course:</label>
+                            <select id="filterCourse">
+                                <option value="">-- All Courses --</option>
+                                <optgroup label="Information Technology">
+                                    <option value="IT101">IT101 - Introduction to Information Technology</option>
+                                    <option value="IT202">IT202 - Network Administration</option>
+                                    <option value="IT303">IT303 - Database Management</option>
+                                </optgroup>
+                                <optgroup label="Computer Science">
+                                    <option value="CS101">CS101 - Introduction to Computer Science</option>
+                                    <option value="CS202">CS202 - Data Structures and Algorithms</option>
+                                    <option value="CS303">CS303 - Software Development</option>
+                                </optgroup>
+                                <optgroup label="Biological Science">
+                                    <option value="BS101">BS101 - Introduction to Biological Science</option>
+                                    <option value="BS202">BS202 - Cellular Biology</option>
+                                    <option value="BS303">BS303 - Genetics and Evolution</option>
+                                </optgroup>
+                                <optgroup label="Hospitality Management">
+                                    <option value="HM101">HM101 - Hospitality Management Fundamentals</option>
+                                    <option value="HM202">HM202 - Hotel Operations</option>
+                                    <option value="HM303">HM303 - Event Management</option>
+                                </optgroup>
+                                <optgroup label="Engineering">
+                                    <option value="ENG101">ENG101 - Introduction to Engineering</option>
+                                    <option value="ENG202">ENG202 - Civil Engineering</option>
+                                    <option value="ENG303">ENG303 - Mechanical Engineering</option>
+                                    <option value="ENG404">ENG404 - Electrical Engineering</option>
+                                </optgroup>
+                                <optgroup label="Agriculture">
+                                    <option value="AGR101">AGR101 - Introduction to Agriculture</option>
+                                    <option value="AGR202">AGR202 - Crop Production</option>
+                                    <option value="AGR303">AGR303 - Animal Husbandry</option>
+                                </optgroup>
+                                <optgroup label="Business Administration">
+                                    <option value="BUS101">BUS101 - Business Fundamentals</option>
+                                    <option value="BUS202">BUS202 - Accounting Principles</option>
+                                    <option value="BUS303">BUS303 - Management Studies</option>
+                                    <option value="BUS404">BUS404 - Finance and Banking</option>
+                                </optgroup>
+                                <optgroup label="Education">
+                                    <option value="EDU101">EDU101 - Educational Psychology</option>
+                                    <option value="EDU202">EDU202 - Curriculum Development</option>
+                                    <option value="EDU303">EDU303 - Teaching Methods</option>
+                                </optgroup>
+                                <optgroup label="Health Sciences">
+                                    <option value="HSC101">HSC101 - Introduction to Health Sciences</option>
+                                    <option value="HSC202">HSC202 - Public Health</option>
+                                    <option value="HSC303">HSC303 - Health Management</option>
+                                </optgroup>
+                                <optgroup label="Nursing">
+                                    <option value="NUR101">NUR101 - Nursing Fundamentals</option>
+                                    <option value="NUR202">NUR202 - Clinical Nursing Practice</option>
+                                    <option value="NUR303">NUR303 - Community Health Nursing</option>
+                                </optgroup>
+                                <optgroup label="Pharmacy">
+                                    <option value="PHM101">PHM101 - Introduction to Pharmacy</option>
+                                    <option value="PHM202">PHM202 - Pharmacology</option>
+                                    <option value="PHM303">PHM303 - Pharmaceutical Practice</option>
+                                </optgroup>
+                                <optgroup label="Law">
+                                    <option value="LAW101">LAW101 - Introduction to Law</option>
+                                    <option value="LAW202">LAW202 - Constitutional Law</option>
+                                    <option value="LAW303">LAW303 - Criminal Law</option>
+                                </optgroup>
+                                <optgroup label="Fine Arts">
+                                    <option value="ART101">ART101 - Introduction to Fine Arts</option>
+                                    <option value="ART202">ART202 - Painting and Drawing</option>
+                                    <option value="ART303">ART303 - Sculpture and Design</option>
+                                </optgroup>
+                                <optgroup label="Psychology">
+                                    <option value="PSY101">PSY101 - Introduction to Psychology</option>
+                                    <option value="PSY202">PSY202 - Developmental Psychology</option>
+                                    <option value="PSY303">PSY303 - Clinical Psychology</option>
+                                </optgroup>
+                                <optgroup label="Social Sciences">
+                                    <option value="SOC101">SOC101 - Introduction to Sociology</option>
+                                    <option value="SOC202">SOC202 - Social Dynamics</option>
+                                    <option value="POL101">POL101 - Political Science</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Filter by Status:</label>
+                            <select id="filterStatus">
+                                <option value="">-- All Status --</option>
+                                <option value="Present">Present</option>
+                                <option value="Absent">Absent</option>
+                                <option value="Excused Absence">Excused Absence</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Search by Student Name:</label>
+                            <input type="text" id="searchStudent" placeholder="Enter student name...">
+                        </div>
+                        <button class="filter-btn" onclick="applyFilters()">Apply Filters</button>
+                        <button class="filter-btn" style="background: #6c757d;" onclick="clearFilters()">Clear</button>
+                    </div>
+
+                    <div id="allRecordsTable" class="table-container"></div>
+                </div>
+
+                <!-- Student Activities Tab -->
+                <div id="studentsTab" class="admin-tab hidden">
+                    <h2>Student Activities</h2>
+                    
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <label>Select Student:</label>
+                            <select id="selectedStudent" onchange="viewStudentActivity()">
+                                <option value="">-- Select a Student --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="studentActivityTable" class="table-container"></div>
+                </div>
+
+                <!-- Access Link Tab -->
+                <div id="accessTab" class="admin-tab hidden">
+                    <h2>Generate Student Access Link</h2>
+                    <p>Generate a temporary site access link valid for 15 minutes. Send this link to students so they can open the site and log in.</p>
+                    <button class="btn-primary" onclick="generateStudentAccessLink()">Generate Temporary Link</button>
+                    <div id="accessLinkContainer" class="access-link-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

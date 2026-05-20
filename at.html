@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Auth Forms */
+        .auth-container h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-danger {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ff5252;
+        }
+
+        .toggle-text {
+            text-align: center;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        .toggle-text button {
+            background: none;
+            border: none;
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 0;
+            text-decoration: underline;
+            font-size: 14px;
+        }
+
+        .toggle-text button:hover {
+            color: #764ba2;
+        }
+
+        /* Attendance Form */
+        .attendance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .attendance-header h1 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .user-info {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            border: none;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: #ff5252;
+        }
+
+        .attendance-form {
+            margin-top: 20px;
+        }
+
+        .form-group.attendance-form .checkbox-group {
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin-bottom: 0;
+            margin-left: 0;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        /* Admin Dashboard Styles */
+        .admin-container {
+            width: 100%;
+            max-width: 1200px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            background: #f0f0f0;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .admin-content {
+            padding: 30px;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .stat-card .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .filter-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            margin-bottom: 5px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            min-width: 150px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        table thead {
+            background: #f5f5f5;
+            border-bottom: 2px solid #ddd;
+        }
+
+        table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        table tbody tr:hover {
+            background: #f9f9f9;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-present {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-absent {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-excused {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .empty-state p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .role-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .role-btn {
+            padding: 12px 30px;
+            border: 2px solid #ddd;
+            background: white;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .role-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .role-btn:hover {
+            border-color: #667eea;
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 20px;
+            }
+
+            .auth-container h1 {
+                font-size: 24px;
+            }
+
+            .attendance-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .admin-nav {
+                flex-wrap: wrap;
+            }
+
+            .filter-section {
+                flex-direction: column;
+            }
+
+            .table-container {
+                font-size: 12px;
+            }
+
+            table th,
+            table td {
+                padding: 8px;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Authentication Section -->
+        <div id="authSection" class="form-container">
+            <div class="auth-container">
+                <h1 id="authTitle">Attendance Tracker</h1>
+                
+                <!-- Role Selection -->
+                <div class="role-selector">
+                    <button type="button" class="role-btn active" id="studentRoleBtn" onclick="selectRole('student')">Student</button>
+                    <button type="button" class="role-btn" id="adminRoleBtn" onclick="selectRole('admin')">Admin</button>
+                </div>
+                
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Email:</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 12px;">Login</button>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signupForm" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="signupName">Full Name:</label>
+                        <input type="text" id="signupName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email:</label>
+                        <input type="email" id="signupEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password:</label>
+                        <input type="password" id="signupPassword" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password:</label>
+                        <input type="password" id="signupConfirmPassword" name="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 12px;">Sign Up</button>
+                </form>
+
+                <div class="toggle-text" id="toggleTextContainer">
+                    <span id="toggleText">Don't have an account? </span>
+                    <button type="button" id="toggleBtn">Sign Up</button>
+                </div>
+
+                <div class="error-message" id="authError"></div>
+            </div>
+        </div>
+
+        <!-- Attendance Section -->
+        <div id="attendanceSection" class="form-container hidden">
+            <div class="attendance-header">
+                <h1>Attendance Submission</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+            <div class="user-info">
+                Welcome, <span id="userNameDisplay"></span>
+            </div>
+
+            <form id="attendanceForm" class="attendance-form">
+                <div class="form-group">
+                    <label for="indexNumber">Index Number:</label>
+                    <input type="text" id="indexNumber" name="indexNumber" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Course Offering:</label>
+                    <select id="courseOffering" name="courseOffering" required>
+                        <option value="">-- Select Course --</option>
+                        <option value="CS101">CS101 - Introduction to Programming</option>
+                        <option value="CS202">CS202 - Data Structures</option>
+                        <option value="CS303">CS303 - Web Development</option>
+                        <option value="CS404">CS404 - Database Management</option>
+                        <option value="CS505">CS505 - Software Engineering</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Attendance:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="present" name="attendance" value="Present">
+                            <label for="present">Present</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="absent" name="attendance" value="Absent">
+                            <label for="absent">Absent</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="excused" name="attendance" value="Excused Absence">
+                            <label for="excused">Excused Absence</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="classTime">Class Time:</label>
+                    <select id="classTime" name="classTime" required>
+                        <option value="">-- Select Class Time --</option>
+                        <option value="8:00 AM - 10:00 AM">8:00 AM - 10:00 AM</option>
+                        <option value="10:00 AM - 12:00 PM">10:00 AM - 12:00 PM</option>
+                        <option value="1:00 PM - 3:00 PM">1:00 PM - 3:00 PM</option>
+                        <option value="3:00 PM - 5:00 PM">3:00 PM - 5:00 PM</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Attendance</button>
+                <div class="success-message" id="successMessage">Attendance submitted successfully!</div>
+                <div class="error-message" id="attendanceError"></div>
+        </div>
+
+        <!-- Admin Dashboard Section -->
+        <div id="adminSection" class="admin-container hidden">
+            <div class="admin-header">
+                <h1>📊 Admin Dashboard</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="admin-content">
+                <!-- Navigation Tabs -->
+                <div class="admin-nav">
+                    <button class="nav-btn active" onclick="showAdminTab('overview')">Overview</button>
+                    <button class="nav-btn" onclick="showAdminTab('records')">All Records</button>
+                    <button class="nav-btn" onclick="showAdminTab('students')">Student Activities</button>
+                </div>
+
+                <!-- Overview Tab -->
+                <div id="overviewTab" class="admin-tab">
+                    <h2>Dashboard Overview</h2>
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <h3>Total Students</h3>
+                            <div class="stat-value" id="totalStudents">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Records</h3>
+                            <div class="stat-value" id="totalRecords">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Present Today</h3>
+                            <div class="stat-value" id="presentToday">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Absent Today</h3>
+                            <div class="stat-value" id="absentToday">0</div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 30px;">Recent Submissions</h3>
+                    <div id="recentRecords" class="table-container"></div>
+                </div>
+
+                <!-- All Records Tab -->
+                <div id="recordsTab" class="admin-tab hidden">
+                    <h2>Attendance Records</h2>
+                    
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <label>Filter by Course:</label>
+                            <select id="filterCourse">
+                                <option value="">-- All Courses --</option>
+                                <option value="CS101">CS101 - Introduction to Programming</option>
+                                <option value="CS202">CS202 - Data Structures</option>
+                                <option value="CS303">CS303 - Web Development</option>
+                                <option value="CS404">CS404 - Database Management</option>
+                                <option value="CS505">CS505 - Software Engineering</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Filter by Status:</label>
+                            <select id="filterStatus">
+                                <option value="">-- All Status --</option>
+                                <option value="Present">Present</option>
+                                <option value="Absent">Absent</option>
+                                <option value="Excused Absence">Excused Absence</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Search by Student Name:</label>
+                            <input type="text" id="searchStudent" placeholder="Enter student name...">
+                        </div>
+                        <button class="filter-btn" onclick="applyFilters()">Apply Filters</button>
+                        <button class="filter-btn" style="background: #6c757d;" onclick="clearFilters()">Clear</button>
+                    </div>
+
+                    <div id="allRecordsTable" class="table-container"></div>
+                </div>
+
+                <!-- Student Activities Tab -->
+                <div id="studentsTab" class="admin-tab hidden">
+                    <h2>Student Activities</h2>
+                    
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <label>Select Student:</label>
+                            <select id="selectedStudent" onchange="viewStudentActivity()">
+                                <option value="">-- Select a Student --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="studentActivityTable" class="table-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Users database (stored in localStorage)
+        const getUsers = () => JSON.parse(localStorage.getItem('users')) || {};
+        const saveUsers = (users) => localStorage.setItem('users', JSON.stringify(users));
+        const getAdmins = () => JSON.parse(localStorage.getItem('admins')) || initializeAdmins();
+        const saveAdmins = (admins) => localStorage.setItem('admins', JSON.stringify(admins));
+        
+        let currentUser = null;
+        let currentRole = 'student';
+
+        // Initialize default admin account
+        function initializeAdmins() {
+            const admins = {
+                'admin@admin.com': { name: 'Admin User', password: 'admin123' }
+            };
+            saveAdmins(admins);
+            return admins;
+        }
+
+        // Initialize admins on page load
+        if (!localStorage.getItem('admins')) {
+            initializeAdmins();
+        }
+
+        // Role Selection
+        function selectRole(role) {
+            currentRole = role;
+            document.getElementById('studentRoleBtn').classList.toggle('active', role === 'student');
+            document.getElementById('adminRoleBtn').classList.toggle('active', role === 'admin');
+            
+            // Update toggle text based on role
+            const toggleText = document.getElementById('toggleText');
+            if (role === 'admin') {
+                toggleText.textContent = "Don't have an admin account? ";
+            } else {
+                toggleText.textContent = "Don't have an account? ";
+            }
+            
+            // Reset forms
+            loginForm.reset();
+            document.getElementById('authError').style.display = 'none';
+        }
+
+        // Toggle between login and signup (for both student and admin)
+        const toggleBtn = document.getElementById('toggleBtn');
+        const toggleText = document.getElementById('toggleText');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+
+        toggleBtn.addEventListener('click', () => {
+            loginForm.classList.toggle('hidden');
+            signupForm.classList.toggle('hidden');
+            
+            if (loginForm.classList.contains('hidden')) {
+                const roleText = currentRole === 'admin' ? 'Admin Account' : 'Your Account';
+                document.getElementById('authTitle').textContent = `Create ${roleText}`;
+                toggleText.textContent = 'Already have an account? ';
+                toggleBtn.textContent = 'Login';
+            } else {
+                document.getElementById('authTitle').textContent = 'Attendance Tracker';
+                const toggleTextContent = currentRole === 'admin' ? "Don't have an admin account? " : "Don't have an account? ";
+                toggleText.textContent = toggleTextContent;
+                toggleBtn.textContent = 'Sign Up';
+            }
+        });
+
+        // Login handler
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const authError = document.getElementById('authError');
+
+            if (currentRole === 'admin') {
+                const admins = getAdmins();
+                if (admins[email] && admins[email].password === password) {
+                    currentUser = { email, name: admins[email].name, role: 'admin' };
+                    authError.style.display = 'none';
+                    showAdminSection();
+                    loginForm.reset();
+                } else {
+                    authError.textContent = 'Invalid admin credentials';
+                    authError.style.display = 'block';
+                }
+            } else {
+                const users = getUsers();
+                if (users[email] && users[email].password === password) {
+                    currentUser = { email, name: users[email].name, role: 'student' };
+                    authError.style.display = 'none';
+                    showAttendanceSection();
+                    loginForm.reset();
+                } else {
+                    authError.textContent = 'Invalid email or password';
+                    authError.style.display = 'block';
+                }
+            }
+        });
+
+        // Signup handler (for both Student and Admin)
+        document.getElementById('signupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            const authError = document.getElementById('authError');
+
+            if (password !== confirmPassword) {
+                authError.textContent = 'Passwords do not match';
+                authError.style.display = 'block';
+                return;
+            }
+
+            if (currentRole === 'admin') {
+                const admins = getAdmins();
+                if (admins[email]) {
+                    authError.textContent = 'Email already registered as admin';
+                    authError.style.display = 'block';
+                    return;
+                }
+                admins[email] = { name, password };
+                saveAdmins(admins);
+                authError.style.display = 'none';
+                currentUser = { email, name, role: 'admin' };
+                showAdminSection();
+                document.getElementById('signupForm').reset();
+            } else {
+                const users = getUsers();
+                if (users[email]) {
+                    authError.textContent = 'Email already registered as student';
+                    authError.style.display = 'block';
+                    return;
+                }
+                users[email] = { name, password };
+                saveUsers(users);
+                authError.style.display = 'none';
+                currentUser = { email, name, role: 'student' };
+                showAttendanceSection();
+                document.getElementById('signupForm').reset();
+            }
+        });
+
+        // Show attendance section
+        function showAttendanceSection() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('attendanceSection').classList.remove('hidden');
+            document.getElementById('userNameDisplay').textContent = currentUser.name;
+        }
+
+        // Show admin section
+        function showAdminSection() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('adminSection').classList.remove('hidden');
+            loadDashboardData();
+            populateStudentList();
+        }
+
+        // Logout handler
+        function logout() {
+            currentUser = null;
+            currentRole = 'student';
+            document.getElementById('authSection').classList.remove('hidden');
+            document.getElementById('attendanceSection').classList.add('hidden');
+            document.getElementById('adminSection').classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            document.getElementById('signupForm').classList.add('hidden');
+            document.getElementById('authTitle').textContent = 'Attendance Tracker';
+            toggleText.textContent = "Don't have an account? ";
+            toggleBtn.textContent = 'Sign Up';
+            document.getElementById('studentRoleBtn').classList.add('active');
+            document.getElementById('adminRoleBtn').classList.remove('active');
+            loginForm.reset();
+            document.getElementById('authError').style.display = 'none';
+        }
+
+        // Attendance form submission
+        document.getElementById('attendanceForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const indexNumber = document.getElementById('indexNumber').value;
+            const courseOffering = document.getElementById('courseOffering').value;
+            const classTime = document.getElementById('classTime').value;
+            
+            const attendanceChecks = document.querySelectorAll('input[name="attendance"]:checked');
+            if (attendanceChecks.length === 0) {
+                document.getElementById('attendanceError').textContent = 'Please select an attendance status';
+                document.getElementById('attendanceError').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+                return;
+            }
+
+            const attendance = attendanceChecks[0].value;
+
+            const record = {
+                studentName: currentUser.name,
+                email: currentUser.email,
+                indexNumber,
+                courseOffering,
+                attendance,
+                classTime,
+                timestamp: new Date().toLocaleString(),
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            const records = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+            records.push(record);
+            localStorage.setItem('attendanceRecords', JSON.stringify(records));
+
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('attendanceError').style.display = 'none';
+
+            setTimeout(() => {
+                document.getElementById('attendanceForm').reset();
+                document.getElementById('successMessage').style.display = 'none';
+            }, 2000);
+        });
+
+        // Uncheck other attendance options when one is selected
+        const attendanceCheckboxes = document.querySelectorAll('input[name="attendance"]');
+        attendanceCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    attendanceCheckboxes.forEach(cb => {
+                        if (cb !== e.target) cb.checked = false;
+                    });
+                }
+            });
+        });
+
+        // ===== ADMIN FUNCTIONS =====
+
+        function loadDashboardData() {
+            const records = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Calculate statistics
+            const uniqueStudents = new Set(records.map(r => r.email)).size;
+            const todaysRecords = records.filter(r => r.date === today);
+            const presentToday = todaysRecords.filter(r => r.attendance === 'Present').length;
+            const absentToday = todaysRecords.filter(r => r.attendance === 'Absent').length;
+
+            document.getElementById('totalStudents').textContent = uniqueStudents;
+            document.getElementById('totalRecords').textContent = records.length;
+            document.getElementById('presentToday').textContent = presentToday;
+            document.getElementById('absentToday').textContent = absentToday;
+
+            // Show recent records
+            const recentRecordsDiv = document.getElementById('recentRecords');
+            const recentRecs = records.slice(-10).reverse();
+            
+            if (recentRecs.length === 0) {
+                recentRecordsDiv.innerHTML = '<div class="empty-state"><p>No attendance records yet</p></div>';
+            } else {
+                recentRecordsDiv.innerHTML = generateRecordsTable(recentRecs);
+            }
+        }
+
+        function generateRecordsTable(records) {
+            if (records.length === 0) {
+                return '<div class="empty-state"><p>No records found</p></div>';
+            }
+
+            let html = '<table><thead><tr><th>Student Name</th><th>Index #</th><th>Course</th><th>Status</th><th>Class Time</th><th>Date & Time</th></tr></thead><tbody>';
+            
+            records.forEach(record => {
+                const statusClass = `status-${record.attendance.toLowerCase().replace(' ', '-')}`;
+                html += `<tr>
+                    <td>${record.studentName}</td>
+                    <td>${record.indexNumber}</td>
+                    <td>${record.courseOffering}</td>
+                    <td><span class="status-badge ${statusClass}">${record.attendance}</span></td>
+                    <td>${record.classTime}</td>
+                    <td>${record.timestamp}</td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            return html;
+        }
+
+        function showAdminTab(tabName) {
+            document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+
+            if (tabName === 'overview') {
+                document.getElementById('overviewTab').classList.remove('hidden');
+                document.querySelectorAll('.nav-btn')[0].classList.add('active');
+                loadDashboardData();
+            } else if (tabName === 'records') {
+                document.getElementById('recordsTab').classList.remove('hidden');
+                document.querySelectorAll('.nav-btn')[1].classList.add('active');
+                displayAllRecords();
+            } else if (tabName === 'students') {
+                document.getElementById('studentsTab').classList.remove('hidden');
+                document.querySelectorAll('.nav-btn')[2].classList.add('active');
+                populateStudentList();
+            }
+        }
+
+        function displayAllRecords() {
+            const records = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+            const allRecordsTable = document.getElementById('allRecordsTable');
+            
+            if (records.length === 0) {
+                allRecordsTable.innerHTML = '<div class="empty-state"><p>No attendance records found</p></div>';
+            } else {
+                allRecordsTable.innerHTML = generateRecordsTable(records.reverse());
+            }
+        }
+
+        function applyFilters() {
+            const records = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+            const course = document.getElementById('filterCourse').value;
+            const status = document.getElementById('filterStatus').value;
+            const studentName = document.getElementById('searchStudent').value.toLowerCase();
+
+            let filtered = records.filter(r => {
+                const matchCourse = !course || r.courseOffering === course;
+                const matchStatus = !status || r.attendance === status;
+                const matchStudent = !studentName || r.studentName.toLowerCase().includes(studentName);
+                return matchCourse && matchStatus && matchStudent;
+            });
+
+            const allRecordsTable = document.getElementById('allRecordsTable');
+            if (filtered.length === 0) {
+                allRecordsTable.innerHTML = '<div class="empty-state"><p>No records match your filters</p></div>';
+            } else {
+                allRecordsTable.innerHTML = generateRecordsTable(filtered.reverse());
+            }
+        }
+
+        function clearFilters() {
+            document.getElementById('filterCourse').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('searchStudent').value = '';
+            displayAllRecords();
+        }
+
+        function populateStudentList() {
+            const records = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+            const students = [...new Set(records.map(r => r.studentName))];
+            
+            const select = document.getElementById('selectedStudent');
+            const currentValue = select.value;
+            
+            select.innerHTML = '<option value="">-- Select a Student --</option>';
+            students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student;
+                option.textContent = student;
+                select.appendChild(option);
+            });
+
+            select.value = currentValue;
+        }
+
+        function viewStudentActivity() {
+            const selectedStudent = document.getElementById('selectedStudent').value;
+            const records = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+            const studentActivity = records.filter(r => r.studentName === selectedStudent);
+            
+            const activityTable = document.getElementById('studentActivityTable');
+            if (studentActivity.length === 0) {
+                activityTable.innerHTML = '<div class="empty-state"><p>No activity found for this student</p></div>';
+            } else {
+                activityTable.innerHTML = generateRecordsTable(studentActivity.reverse());
+            }
+        }
+    </script>
+</body>
+</html>
